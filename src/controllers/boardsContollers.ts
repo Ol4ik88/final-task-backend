@@ -28,14 +28,14 @@ export const getBoardById = async (req: Request, res: Response) => {
 export const createBoard = async (req: Request, res: Response) => {
   const guid = req.header('Guid') || 'undefined';
   const initUser = req.header('initUser') || 'undefined';
-  const bodyError = checkBody(req.body, ['title', 'owner', 'users'])
+  const bodyError = checkBody(req.body, ['title', 'description', 'owner', 'users'])
   if (bodyError) {
     return res.status(400).send(createError(400, "bad request: " + bodyError));
   }
 
-  const { title, owner, users } = req.body;
+  const { title, description, owner, users } = req.body;
   try {
-    const newBoard = await boardService.createBoard({ title, owner, users }, guid, initUser);
+    const newBoard = await boardService.createBoard({ title, description, owner, users }, guid, initUser);
     res.json(newBoard);
   }
   catch (err) { return console.log(err); }
@@ -45,14 +45,14 @@ export const createBoard = async (req: Request, res: Response) => {
 export const updateBoard = async (req: Request, res: Response) => {
   const guid = req.header('Guid') || 'undefined';
   const initUser = req.header('initUser') || 'undefined';
-  const bodyError = checkBody(req.body, ['title', 'owner', 'users'])
+  const bodyError = checkBody(req.body, ['title', 'description', 'owner', 'users'])
   if (bodyError) {
     return res.status(400).send(createError(400, "bad request: " + bodyError));
   }
-  const { title, owner, users } = req.body;
+  const { title, description, owner, users } = req.body;
 
   try {
-    const updatedBoard = await boardService.updateBoard(req.params['boardId'], { title, owner, users }, guid, initUser);
+    const updatedBoard = await boardService.updateBoard(req.params['boardId'], { title, description, owner, users }, guid, initUser);
     res.json(updatedBoard);
   }
   catch (err) { return console.log(err); }
